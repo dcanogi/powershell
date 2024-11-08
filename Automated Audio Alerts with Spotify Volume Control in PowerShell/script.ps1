@@ -1,25 +1,28 @@
-# Ruta del ejecutable SoundVolumeView
+# Path to the SoundVolumeView executable
 $soundVolumeViewPath = "C:\dani\sound\SoundVolumeView.exe"
 
-# Verifica si el archivo SoundVolumeView existe
+# Check if SoundVolumeView exists
 if (Test-Path $soundVolumeViewPath) {
 
-    # Bajar el volumen de Spotify al 10%
-    Start-Process $soundVolumeViewPath -ArgumentList "/SetVolume", "Spotify", "0"
+    # Lower Spotify volume to 10%
+    Start-Process $soundVolumeViewPath -ArgumentList "/SetVolume", "Spotify", "10"
 
-    # Reproducir locución
+    # Path to the audio file
     $audioFilePath = "C:\dani\audio.wav"
 
+    # Check if the audio file exists
     if (Test-Path $audioFilePath) {
-        Write-Host "Reproduciendo audio..."
+        Write-Host "Playing audio..."
         (New-Object Media.SoundPlayer $audioFilePath).PlaySync()
     } else {
-        Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show("El audio no se ha encontrado, contacta con Dani para solventar este problema", "Aviso", 'OK', 'Information')
+        # Show alert if the audio file is not found
+        Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show("Audio file not found. Please contact Dani for assistance.", "Notice", 'OK', 'Information')
     }
 
-    # Subir el volumen de Spotify al 100%
+    # Restore Spotify volume to 100%
     Start-Process $soundVolumeViewPath -ArgumentList "/SetVolume", "Spotify", "100"
 
 } else {
-    Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show("SoundVolumeView no encontrado, contacta con Dani para solventar este problema", "Aviso", 'OK', 'Information')
+    # Show alert if SoundVolumeView is not found
+    Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show("SoundVolumeView not found. Please contact Dani for assistance.", "Notice", 'OK', 'Information')
 }
